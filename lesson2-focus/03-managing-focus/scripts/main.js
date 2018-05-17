@@ -19,6 +19,8 @@ page('/:slug', function(context) {
   newMenuItem.classList.add('is-active');
   newPage.classList.add('is-active');
 
+  var pageHeader = newPage.querySelector('h2');
+  pageHeader.focus();
 });
 
 page({
