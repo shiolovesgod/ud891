@@ -31,8 +31,8 @@
 
         e.preventDefault();
 
-        // This seems like a good place to do some stuff :)
-
+        const newIdx = this.focusedIdx - 1;
+        this.focusedIdx = (newIdx > 0) ? newIdx : this.buttons.length;
         break;
 
       }
@@ -42,13 +42,15 @@
 
         e.preventDefault();
 
-        // This seems like a good place to do some stuff :)
+        const newIdx = this.focusedIdx + 1;
+        this.focusedIdx = (newIdx < this.buttons.length) ? newIdx : 0;
 
         break;
       }
 
+      
     }
-
+  
     this.changeFocus(this.focusedIdx); // <-- Hmm, interesting...
   };
 
