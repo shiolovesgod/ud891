@@ -237,6 +237,8 @@
             newActive.classList.add('active');
 
             // FIXME: need to ensure focus stays on textbox, but report active list option
+            //Set the aria-activedescendent prpoerty to newActive.id
+            this.textbox.setActiveDescendant(newActive);
         }
     };
 
