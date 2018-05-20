@@ -1,14 +1,14 @@
-(function() {
+(function () {
     'use strict';
 
     // Define values for keycodes
-    var VK_ENTER      = 13;
-    var VK_ESC        = 27;
-    var VK_SPACE      = 32;
-    var VK_LEFT       = 37;
-    var VK_UP         = 38;
-    var VK_RIGHT      = 39;
-    var VK_DOWN       = 40;
+    var VK_ENTER = 13;
+    var VK_ESC = 27;
+    var VK_SPACE = 32;
+    var VK_LEFT = 37;
+    var VK_UP = 38;
+    var VK_RIGHT = 39;
+    var VK_DOWN = 40;
 
     var LAST_ID = 0;
 
@@ -48,58 +48,58 @@
             this.el.value = val;
         },
 
-        showListbox: function() {
+        showListbox: function () {
             this.listbox.show();
             this.el.setAttribute('aria-expanded', true);
         },
 
-        hideListbox: function() {
+        hideListbox: function () {
             this.listbox.hide();
             this.el.setAttribute('aria-expanded', false);
             this.el.removeAttribute('aria-activedescendant');
         },
 
-        handleFocus: function(e) {
+        handleFocus: function (e) {
             this.showListbox();
         },
 
-        handleBlur: function(e) {
+        handleBlur: function (e) {
             this.hideListbox();
         },
 
-        handleInput: function(e) {
+        handleInput: function (e) {
             this.showListbox();
             this.listbox.filter(this.el.value);
         },
 
-        handleKeyDown: function(e) {
+        handleKeyDown: function (e) {
             switch (e.keyCode) {
-            case VK_DOWN:
-                if (!this.listbox.hidden) {
-                    this.listbox.nextActiveListItem();
-                }
-                break;
-            case VK_UP:
-                if (!this.listbox.hidden) {
-                    this.listbox.previousActiveListItem();
-                }
-                break;
-            case VK_ENTER:
-                var active = this.listbox.activeItem;
-                if (!active)
+                case VK_DOWN:
+                    if (!this.listbox.hidden) {
+                        this.listbox.nextActiveListItem();
+                    }
                     break;
-                this.setSelected(active);
-                this.hideListbox();
-                break;
-            case VK_ESC:
-                this.hideListbox();
-                break;
+                case VK_UP:
+                    if (!this.listbox.hidden) {
+                        this.listbox.previousActiveListItem();
+                    }
+                    break;
+                case VK_ENTER:
+                    var active = this.listbox.activeItem;
+                    if (!active)
+                        break;
+                    this.setSelected(active);
+                    this.hideListbox();
+                    break;
+                case VK_ESC:
+                    this.hideListbox();
+                    break;
             }
 
             return;
         },
 
-        setSelected: function(el) {
+        setSelected: function (el) {
             this.value = el.textContent;
         },
 
@@ -108,7 +108,7 @@
          * Sets the aria-activedescendant value of the textbox to the ID of the given element.
          * @param {Element} el
          */
-        setActiveDescendant: function(el) {
+        setActiveDescendant: function (el) {
             if (!el.id)
                 return;
             this.el.setAttribute('aria-activedescendant', el.id);
@@ -127,8 +127,6 @@
         for (var i = 0; i < this.items.length; i++) {
             var item = this.items[i];
             item.id = nextId();
-            item.setAttribute("aria-posinset", i+1);
-            item.setAttribute("aria-setsize", this.items.length);
 
             item.addEventListener('mouseover', this.handleHoverOnItem.bind(this));
             item.addEventListener('mousedown', this.handleClickOnItem.bind(this), true);
@@ -139,7 +137,7 @@
 
 
     ListBox.prototype = {
-        toggle: function() {
+        toggle: function () {
             if (this.hidden) {
                 this.show();
             } else {
@@ -155,7 +153,7 @@
             return this.el.querySelector('[role=option].active');
         },
 
-        filter: function(str) {
+        filter: function (str) {
             this.visibleItems = [];
             var foundItems = 0;
             for (var item of this.items) {
@@ -173,19 +171,27 @@
             } else {
                 // FIXME: ChromeVox reports the wrong list size and position
                 //get the position in larger list
+                let idx = 0;
+                for (item of this.visibleItems ){
+                    item.setAttribute("aria-posinset", idx + 1);
+                    item.setAttribute("aria-setsize", foundItems);
+                    idx++;
+                }
+
+                
 
 
             }
         },
 
-        show: function() {
+        show: function () {
             if (!this.hidden)
                 return;
 
             this.el.removeAttribute('hidden');
         },
 
-        hide: function() {
+        hide: function () {
             if (this.hidden)
                 return;
 
@@ -194,14 +200,14 @@
             this.el.setAttribute('hidden', '');
         },
 
-        handleHoverOnItem: function(e) {
+        handleHoverOnItem: function (e) {
             var newIdx = this.visibleItems.indexOf(e.target);
             if (newIdx < 0)
                 return;
             this.changeActiveListitem(newIdx);
         },
 
-        handleClickOnItem: function(e) {
+        handleClickOnItem: function (e) {
             var item = e.target;
             if (this.items.indexOf(item) < 0)
                 return;
@@ -209,7 +215,7 @@
             this.hide();
         },
 
-        nextActiveListItem: function() {
+        nextActiveListItem: function () {
             var active = this.activeItem;
             var activeIdx = -1;
             if (active)
@@ -220,7 +226,7 @@
             this.changeActiveListitem(newIdx);
         },
 
-        previousActiveListItem: function() {
+        previousActiveListItem: function () {
             var active = this.activeItem;
             var activeIdx = -1;
             if (active)
@@ -234,7 +240,7 @@
             this.changeActiveListitem(newIdx);
         },
 
-        changeActiveListitem: function(newIdx) {
+        changeActiveListitem: function (newIdx) {
             var active = this.activeItem;
             var newActive = this.visibleItems[newIdx];
             if (active)
