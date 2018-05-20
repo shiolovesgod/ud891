@@ -127,6 +127,8 @@
         for (var i = 0; i < this.items.length; i++) {
             var item = this.items[i];
             item.id = nextId();
+            item.setAttribute("aria-posinset", i+1);
+            item.setAttribute("aria-setsize", this.items.length);
 
             item.addEventListener('mouseover', this.handleHoverOnItem.bind(this));
             item.addEventListener('mousedown', this.handleClickOnItem.bind(this), true);
@@ -170,6 +172,9 @@
                 this.hide();
             } else {
                 // FIXME: ChromeVox reports the wrong list size and position
+                //get the position in larger list
+
+
             }
         },
 
